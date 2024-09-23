@@ -1427,7 +1427,7 @@ GameObject:
   - component: {fileID: 1331002123}
   - component: {fileID: 1331002122}
   m_Layer: 5
-  m_Name: quit-game
+  m_Name: btn-quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2051,7 +2051,7 @@ GameObject:
   - component: {fileID: 1957939366}
   - component: {fileID: 1957939370}
   m_Layer: 5
-  m_Name: title-screen-canvas
+  m_Name: TitleScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
