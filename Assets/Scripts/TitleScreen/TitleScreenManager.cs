@@ -10,9 +10,8 @@ public class TitleScreenManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartNewGame()
     {
-        
+        StartCoroutine(SaveManager._instance.LoadNewGame());
     }
 }
