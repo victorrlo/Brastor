@@ -10,11 +10,21 @@ public class InputManager : MonoBehaviour
     PlayerControls _playerControls;
 
     [SerializeField] private Vector2 _movementInput;
+    public float _verticalInput;
+    public float _horizontalInput;
+    public float _moveAmount;
 
     private void Awake()
     {
         if (_instance == null) _instance = this;
         else Destroy(gameObject);
+
+        _playerControls = new PlayerControls();
+    }
+
+    private void Update()
+    {
+        HandleMovementInput();
     }
 
     private void Start()
@@ -50,5 +60,22 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= OnSceneChange;
+    }
+
+    private void HandleMovementInput()
+    {
+        _verticalInput = _movementInput.y;
+        _horizontalInput = _movementInput.x;
+
+        _moveAmount = Mathf.Clamp01(Mathf.Abs(_verticalInput) + Mathf.Abs(_horizontalInput));
+
+        if (_moveAmount <= 0.5 && _moveAmount < 0)
+        {
+            _moveAmount = 0.5f;
+        }
+        else if (_moveAmount > 0.5 && _moveAmount <= 1)
+        {
+            _moveAmount = 1;
+        }
     }
 }
