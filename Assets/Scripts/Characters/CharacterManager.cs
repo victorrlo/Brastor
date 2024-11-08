@@ -2,18 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour
-{
-    public CharacterController _characterController;
-    protected virtual void Awake()
+namespace Brastor { 
+    public class CharacterManager : MonoBehaviour
     {
-        DontDestroyOnLoad(this);
+        public CharacterController _characterController;
+        protected virtual void Awake()
+        {
+            DontDestroyOnLoad(this);
 
-        _characterController = GetComponent<CharacterController>();
+            _characterController = GetComponent<CharacterController>();
+        }
+
+        protected virtual void Update()
+        {
+
+        }
+
+        protected virtual void LateUpdate()
+        {
+            
+        }
     }
 
-    protected virtual void Update()
-    {
-
-    }
 }

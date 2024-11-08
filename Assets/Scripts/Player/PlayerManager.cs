@@ -3,24 +3,33 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerManager : CharacterManager
+namespace Brastor
 {
-
-    [SerializeField] private GameObject _playerPrefab;
-
-    PlayerLocomotionManager _playerLocomotionManager;
-
-    protected override void Awake()
+    public class PlayerManager : CharacterManager
     {
-        base.Awake();
 
-        _playerLocomotionManager = _playerPrefab.GetComponent<PlayerLocomotionManager>();
-    }
+        PlayerLocomotionManager _playerLocomotionManager;
 
-    protected override void Update()
-    {
-        base.Update();
+        protected override void Awake()
+        {
+            base.Awake();
 
-        _playerLocomotionManager.HandleAllMovement();
+            //do more stuff, only for the player
+            _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            PlayerCamera._instance._player = this;
+
+            _playerLocomotionManager.HandleAllMovement();
+        }
+
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+            PlayerCamera._instance.HandleAllCameraActions();
+        }
     }
 }

@@ -3,79 +3,85 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InputManager : MonoBehaviour
-{
-    public static InputManager _instance;
-
-    PlayerControls _playerControls;
-
-    [SerializeField] private Vector2 _movementInput;
-    public float _verticalInput;
-    public float _horizontalInput;
-    public float _moveAmount;
-
-    private void Awake()
+namespace Brastor { 
+    public class InputManager : MonoBehaviour
     {
-        if (_instance == null) _instance = this;
-        else Destroy(gameObject);
+        public static InputManager _instance;
 
-        _playerControls = new PlayerControls();
-    }
+        PlayerControls _playerControls;
 
-    private void Update()
-    {
-        HandleMovementInput();
-    }
+        [SerializeField] private Vector2 _movementInput;
+        public float _verticalInput;
+        public float _horizontalInput;
+        public float _moveAmount;
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-
-        SceneManager.activeSceneChanged += OnSceneChange;
-
-        _instance.enabled = false;
-    }
-
-    private void OnSceneChange(Scene oldScene, Scene newScene)
-    {
-        if(newScene.buildIndex == SaveManager._instance.GetWorldSceneIndex())
+        private void Awake()
         {
-            _instance.enabled = true;
+            if (_instance == null) _instance = this;
+            else Destroy(gameObject);
+
+            _playerControls = new PlayerControls();
         }
-        else
+
+        private void Update()
         {
+            HandleMovementInput();
+        }
+
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+
+            //when the scene changes, run this logic
+            SceneManager.activeSceneChanged += OnSceneChange;
+
             _instance.enabled = false;
         }
-    }
 
-    private void OnEnable()
-    {
-        if (_playerControls == null) _playerControls = new PlayerControls();
-
-        _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
-
-        _playerControls.Enable();
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.activeSceneChanged -= OnSceneChange;
-    }
-
-    private void HandleMovementInput()
-    {
-        _verticalInput = _movementInput.y;
-        _horizontalInput = _movementInput.x;
-
-        _moveAmount = Mathf.Clamp01(Mathf.Abs(_verticalInput) + Mathf.Abs(_horizontalInput));
-
-        if (_moveAmount <= 0.5 && _moveAmount < 0)
+        private void OnSceneChange(Scene oldScene, Scene newScene)
         {
-            _moveAmount = 0.5f;
+            //if we are loading into our world scene, enable our player controls
+            if(newScene.buildIndex == SaveManager._instance.GetWorldSceneIndex())
+            {
+                _instance.enabled = true;
+            }
+            //otherwise we must be at the menu scene, disable our player controls
+            //this is so our player cant move around if we enter things like a character creation menu etc
+            else
+            {
+                _instance.enabled = false;
+            }
         }
-        else if (_moveAmount > 0.5 && _moveAmount <= 1)
+
+        private void OnEnable()
         {
-            _moveAmount = 1;
+            if (_playerControls == null) _playerControls = new PlayerControls();
+
+            _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
+
+            _playerControls.Enable();
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.activeSceneChanged -= OnSceneChange;
+        }
+
+        private void HandleMovementInput()
+        {
+            _verticalInput = _movementInput.y;
+            _horizontalInput = _movementInput.x;
+
+            _moveAmount = Mathf.Clamp01(Mathf.Abs(_verticalInput) + Mathf.Abs(_horizontalInput));
+
+            if (_moveAmount <= 0.5 && _moveAmount < 0)
+            {
+                _moveAmount = 0.5f;
+            }
+            else if (_moveAmount > 0.5 && _moveAmount <= 1)
+            {
+                _moveAmount = 1;
+            }
         }
     }
 }

@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
-{
-
-    public static UIManager _instance;
-    private void Awake()
+namespace Brastor { 
+    public class UIManager : MonoBehaviour
     {
-        if (_instance == null) _instance = this;
-        else Destroy(gameObject);
-    }
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+        public static UIManager _instance;
+        private void Awake()
+        {
+            if (_instance == null) _instance = this;
+            else Destroy(gameObject);
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

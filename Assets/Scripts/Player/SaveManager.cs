@@ -2,32 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class SaveManager : MonoBehaviour
-{
 
-    public static SaveManager _instance;
-    [SerializeField] private int worldSceneIndex = 1;
-
-    private void Awake()
+namespace Brastor { 
+    public class SaveManager : MonoBehaviour
     {
-        if (_instance == null) _instance = this;
-        else Destroy(gameObject);
-    }
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+        public static SaveManager _instance;
+        [SerializeField] private int worldSceneIndex = 1;
 
-    public IEnumerator LoadNewGame()
-    {
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
+        private void Awake()
+        {
+            //there can only be one instance of this script at one time, if another exists, destroy it
+            if (_instance == null) _instance = this;
+            else Destroy(gameObject);
+        }
 
-        yield return null;
-    }
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
-    public int GetWorldSceneIndex()
-    {
-        return worldSceneIndex;
+        public IEnumerator LoadNewGame()
+        {
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
+
+            yield return null;
+        }
+
+        public int GetWorldSceneIndex()
+        {
+            return worldSceneIndex;
+        }
     }
 }
