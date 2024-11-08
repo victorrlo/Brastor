@@ -74,14 +74,17 @@ namespace Brastor {
 
             _moveAmount = Mathf.Clamp01(Mathf.Abs(_verticalInput) + Mathf.Abs(_horizontalInput));
 
+
+            //clamp the values, so it's either 0, 0.5 or 1
             if (_moveAmount <= 0.5 && _moveAmount < 0)
             {
-                _moveAmount = 0.5f;
+                _moveAmount = 0.5f; //slow walking
             }
             else if (_moveAmount > 0.5 && _moveAmount <= 1)
             {
-                _moveAmount = 1;
+                _moveAmount = 1; //running
             }
+            //in the future there will be sprinting too
         }
     }
 }

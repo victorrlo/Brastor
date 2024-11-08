@@ -18,6 +18,11 @@ namespace Brastor
             _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         }
 
+        private void Start()
+        {
+            PlayerCamera._instance._player = this; //assign camera to player
+        }
+
         protected override void Update()
         {
             base.Update();
