@@ -10,10 +10,16 @@ namespace Brastor {
 
         PlayerControls _playerControls;
 
+        [Header("Player Movement Input")]
         [SerializeField] private Vector2 _movementInput;
         public float _verticalInput;
         public float _horizontalInput;
         public float _moveAmount;
+
+        [Header("Camera Movement Input")]
+        [SerializeField] private Vector2 _cameraInput;
+        public float _cameraVerticalInput;
+        public float _cameraHorizontalInput;
 
         private void Awake()
         {
@@ -25,7 +31,8 @@ namespace Brastor {
 
         private void Update()
         {
-            HandleMovementInput();
+            HandlePlayerMovementInput();
+            HandleCameraMovementInput();
         }
 
         private void Start()
@@ -58,6 +65,7 @@ namespace Brastor {
             if (_playerControls == null) _playerControls = new PlayerControls();
 
             _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
+            _playerControls.PlayerCamera.Movement.performed += i => _cameraInput = i.ReadValue<Vector2>();
 
             _playerControls.Enable();
         }
@@ -67,7 +75,7 @@ namespace Brastor {
             SceneManager.activeSceneChanged -= OnSceneChange;
         }
 
-        private void HandleMovementInput()
+        private void HandlePlayerMovementInput()
         {
             _verticalInput = _movementInput.y;
             _horizontalInput = _movementInput.x;
@@ -85,6 +93,12 @@ namespace Brastor {
                 _moveAmount = 1; //running
             }
             //in the future there will be sprinting too
+        }
+
+        private void HandleCameraMovementInput()
+        {
+            _cameraVerticalInput = _cameraInput.y;
+            _cameraHorizontalInput = _cameraInput.x;
         }
     }
 }

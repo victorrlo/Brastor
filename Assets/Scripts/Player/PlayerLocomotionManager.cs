@@ -41,16 +41,14 @@ namespace Brastor
         {
             _verticalMovement = InputManager._instance._verticalInput;
             _horizontalMovement = InputManager._instance._horizontalInput;
-
-
         }
 
         private void HandleGroundedMovement()
         {
             GetVerticalAndHorizontalInputs();
 
-            _moveDirection = PlayerCamera._instance.transform.forward * _verticalMovement;
-            _moveDirection = _moveDirection + PlayerCamera._instance.transform.right * _horizontalMovement;
+            _moveDirection =  PlayerCamera._instance._camera.transform.forward * _verticalMovement;
+            _moveDirection = _moveDirection + PlayerCamera._instance._camera.transform.right * _horizontalMovement;
             _moveDirection.Normalize();
             _moveDirection.y = 0;
 
@@ -70,7 +68,7 @@ namespace Brastor
         {
             _targetRotationDirection = Vector3.zero;
             _targetRotationDirection = PlayerCamera._instance._camera.transform.forward * _verticalMovement;
-            _targetRotationDirection = _targetRotationDirection + PlayerCamera._instance.transform.right * _horizontalMovement;
+            _targetRotationDirection = _targetRotationDirection + PlayerCamera._instance._camera.transform.right * _horizontalMovement;
             _targetRotationDirection.Normalize();
             _targetRotationDirection.y = 0;
 
