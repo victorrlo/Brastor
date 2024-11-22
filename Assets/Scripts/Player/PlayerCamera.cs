@@ -104,20 +104,27 @@ namespace Brastor
         {
             _targetCameraZPosition = _cameraZPosition;
             RaycastHit hit;
+            // DIRECTION FOR COLLISION CHECK
             Vector3 direction = _camera.transform.position - _cameraPivotTransform.position;
             direction.Normalize();
 
+            // CHECK IF THERE'S AN OBJECT IN FRONT OF DESIRED DIRECTION
             if (Physics.SphereCast(_cameraPivotTransform.position, _cameraCollisionRadius, direction, out hit, Mathf.Abs(_targetCameraZPosition), _collideWithLayers))
             {
+                //  IF THERE IS, WE GET OUR DISTANCE FROM IT
                 float distanceFromHitObject = Vector3.Distance(_cameraPivotTransform.position, hit.point);
+
+                // THEN EQUATE OUR TARGET Z POSITION TO THE FOLLOWING
                 _targetCameraZPosition = -(distanceFromHitObject - _cameraCollisionRadius);
             }
 
+            // IF OUR TARGET POSITION IS LESS THAN THE RADIUS WE DEFINED, WE SUBTRACT OUR COLLISION RADIUS (MAKING IT SNAP BACK)
             if (Mathf.Abs(_targetCameraZPosition) < _cameraCollisionRadius)
             {
                 _targetCameraZPosition = -_cameraCollisionRadius;
             }
-
+             
+            // WE THEN APPLY OUR FINAL POSITION USING A LERP OVER A TIME OF 0.2F
             _cameraObjectPosition.z = Mathf.Lerp(_camera.transform.localPosition.z, _targetCameraZPosition, 0.2f);
             _camera.transform.localPosition = _cameraObjectPosition;
         }
