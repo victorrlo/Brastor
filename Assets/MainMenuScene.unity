@@ -2082,26 +2082,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCamera(Left&Right)
       objectReference: {fileID: 0}
-    - target: {fileID: 3858965551739234275, guid: 3331eb295f3d7f34c96a3768d0573b26,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3858965551739234275, guid: 3331eb295f3d7f34c96a3768d0573b26,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3858965551739234275, guid: 3331eb295f3d7f34c96a3768d0573b26,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3858965551739234275, guid: 3331eb295f3d7f34c96a3768d0573b26,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4393858454505733785, guid: 3331eb295f3d7f34c96a3768d0573b26,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2152,10 +2132,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8032032267367104563, guid: 3331eb295f3d7f34c96a3768d0573b26,
+    - target: {fileID: 6788149494946786076, guid: 3331eb295f3d7f34c96a3768d0573b26,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.6
+      propertyPath: _collideWithLayers.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
