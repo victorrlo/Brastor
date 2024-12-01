@@ -7,7 +7,7 @@ namespace Brastor {
     public class InputManager : MonoBehaviour
     {
         public static InputManager _instance;
-
+        public PlayerManager _player;
         PlayerControls _playerControls;
 
         [Header("Player Movement Input")]
@@ -27,6 +27,7 @@ namespace Brastor {
             else Destroy(gameObject);
 
             _playerControls = new PlayerControls();
+            _player = GetComponent<PlayerManager>();
         }
 
         private void Update()
@@ -93,6 +94,19 @@ namespace Brastor {
                 _moveAmount = 1; //running
             }
             //in the future there will be sprinting too
+
+            // WHY DO WE PASS 0 ON THE HORIZONTAL? BECAUSE WE ONLY WANT NON-STRAFING MOVEMENT
+            // WE USE THE HORIZONTAL WHEN WE ARE STRAFING OR LOCKED ON
+
+            if (_player == null)
+            {
+                return;
+            }
+
+            // IF NOT LOCKED ON, USE ONLY MOVE AMOUNT
+            _player._playerAnimatorManager.UpdateAnimatorMovementParameters(0, _moveAmount);
+
+            // IF WE ARE LOCKED ON, PASS THE HORIZONTAL VALUE
         }
 
         private void HandleCameraMovementInput()
