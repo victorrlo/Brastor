@@ -893,6 +893,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4994234648788979711, guid: e5862226238311043ac7343a1ca27ac9,
+        type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7109739861973579340, guid: e5862226238311043ac7343a1ca27ac9,
         type: 3}
       propertyPath: m_LocalPosition.x

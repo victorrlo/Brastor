@@ -6,10 +6,11 @@ namespace Brastor {
     public class CharacterManager : MonoBehaviour
     {
         public CharacterController _characterController;
+        [HideInInspector] public Animator _animator;
         protected virtual void Awake()
         {
             DontDestroyOnLoad(this);
-
+            _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
         }
 
