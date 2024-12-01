@@ -98,6 +98,11 @@ namespace Brastor {
             // WHY DO WE PASS 0 ON THE HORIZONTAL? BECAUSE WE ONLY WANT NON-STRAFING MOVEMENT
             // WE USE THE HORIZONTAL WHEN WE ARE STRAFING OR LOCKED ON
 
+            if (_player == null)
+            {
+                return;
+            }
+
             // IF NOT LOCKED ON, USE ONLY MOVE AMOUNT
             _player._playerAnimatorManager.UpdateAnimatorMovementParameters(0, _moveAmount);
 
