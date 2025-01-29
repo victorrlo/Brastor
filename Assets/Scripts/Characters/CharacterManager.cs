@@ -7,6 +7,9 @@ namespace Brastor {
     {
         public CharacterController _characterController;
         [HideInInspector] public Animator _animator;
+
+        [Header("Flags")]
+        public bool isPerformingAction = false;
         protected virtual void Awake()
         {
             DontDestroyOnLoad(this);

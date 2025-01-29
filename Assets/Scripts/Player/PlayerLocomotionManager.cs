@@ -9,15 +9,20 @@ namespace Brastor
     {
         PlayerManager _player;
 
-        public float _verticalMovement;
-        public float _horizontalMovement;
-        public float moveAmount;
 
+        [HideInInspector] public float _verticalMovement;
+        [HideInInspector] public float _horizontalMovement;
+        [HideInInspector] public float moveAmount;
+
+        [Header("Movement Settings")]
         private Vector3 _moveDirection;
         private Vector3 _targetRotationDirection;
         [SerializeField] float _walkingSpeed = 2;
         [SerializeField] float _runningSpeed = 5;
         [SerializeField] float _rotationSpeed = 15;
+
+        [Header("Dodge")]
+        private Vector3 rollDirection;
 
         protected override void Awake()
         {
@@ -80,6 +85,36 @@ namespace Brastor
             Quaternion newRotation = Quaternion.LookRotation(_targetRotationDirection);
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, _rotationSpeed * Time.deltaTime);
             transform.rotation = targetRotation;
+        }
+
+        public void AttemptToPerformDodge()
+        {
+            if(_player.isPerformingAction)
+            {
+                return;
+            }
+            // WHILE MOVING, PERFORM A ROLL
+            if(moveAmount > 0)
+            {
+                rollDirection = PlayerCamera._instance._camera.transform.forward * _verticalMovement;
+                rollDirection = PlayerCamera._instance._camera.transform.right * _horizontalMovement;
+
+                rollDirection.y = 0;
+                rollDirection.Normalize();
+
+                Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
+                _player.transform.rotation = playerRotation;
+
+                // PERFORM A ROLL ANIMATION
+                _player._playerAnimatorManager.PlayTargetActionAnimation("Roll_Forward_01", true, true);
+                Debug.LogWarning("DO A BARREL ROLL!");
+            }
+            // IF NOT MOVING, PERFORM A BACKSTEP
+            else
+            {
+                // PERFORM A BACKSTEP ANIMATION
+            }
+            
         }
     }
 }

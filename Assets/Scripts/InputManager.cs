@@ -10,16 +10,21 @@ namespace Brastor {
         public PlayerManager _player;
         PlayerControls _playerControls;
 
+        [Header("Camera Movement Input")]
+        [SerializeField] private Vector2 _cameraInput;
+        public float _cameraVerticalInput;
+        public float _cameraHorizontalInput;
+
         [Header("Player Movement Input")]
         [SerializeField] private Vector2 _movementInput;
         public float _verticalInput;
         public float _horizontalInput;
         public float _moveAmount;
 
-        [Header("Camera Movement Input")]
-        [SerializeField] private Vector2 _cameraInput;
-        public float _cameraVerticalInput;
-        public float _cameraHorizontalInput;
+        [Header("PLAYER ACTION INPUT")]
+        [SerializeField] bool _dodgeInput = false;
+
+        
 
         private void Awake()
         {
@@ -30,12 +35,6 @@ namespace Brastor {
             _player = GetComponent<PlayerManager>();
         }
 
-        private void Update()
-        {
-            HandlePlayerMovementInput();
-            HandleCameraMovementInput();
-        }
-
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
@@ -44,6 +43,11 @@ namespace Brastor {
             SceneManager.activeSceneChanged += OnSceneChange;
 
             _instance.enabled = false;
+        }
+
+        private void Update()
+        {
+            HandleAllInput();
         }
 
         private void OnSceneChange(Scene oldScene, Scene newScene)
@@ -61,12 +65,49 @@ namespace Brastor {
             }
         }
 
+        // DISABLE INPUT ADJUSTS IF FOCUS IS NOT ON THE GAME ANYMORE
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (_playerControls == null)
+            {
+                Debug.LogError("Player Controls has not been initialized!");
+                return;
+            }
+            if (hasFocus)
+            {
+                EnableInput();
+            }
+            else if (!hasFocus)
+            {
+                DisableInput();
+            }
+        }
+
+        // TO BE ABLE TO HANDLE INPUT ENABLING AND DISABLING IN OTHER PARTS OF THE CODE (FOR EXAMPLE DURING MENU OPENING)
+        private void EnableInput()
+        {
+            if (_playerControls != null)
+            {
+                _playerControls.Enable();
+            }
+        }
+
+        private void DisableInput()
+        {
+            if (_playerControls != null)
+            {
+                _playerControls.Disable();
+            }
+        }
+
+
         private void OnEnable()
         {
             if (_playerControls == null) _playerControls = new PlayerControls();
 
             _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
             _playerControls.PlayerCamera.Movement.performed += i => _cameraInput = i.ReadValue<Vector2>();
+            _playerControls.PlayerAction.Dodge.performed += i => _dodgeInput = true;
 
             _playerControls.Enable();
         }
@@ -75,6 +116,15 @@ namespace Brastor {
         {
             SceneManager.activeSceneChanged -= OnSceneChange;
         }
+
+        private void HandleAllInput()
+        {
+            HandleCameraMovementInput();
+            HandlePlayerMovementInput();
+            HandleDodgeInput();
+        }
+
+        // MOVEMENT
 
         private void HandlePlayerMovementInput()
         {
@@ -113,6 +163,20 @@ namespace Brastor {
         {
             _cameraVerticalInput = _cameraInput.y;
             _cameraHorizontalInput = _cameraInput.x;
+        }
+
+        // ACTION
+
+        private void HandleDodgeInput()
+        {
+            if (_dodgeInput == true)
+            {
+                _dodgeInput = false;
+                // FOR THE FUTURE: RETURN IF MENU OR UI WINDOW IS OPEN, TO DO NOTHING WHILE IN THESE STATES
+
+                // PERFORM DODGE
+                _player._playerLocomotionManager.AttemptToPerformDodge();
+            }
         }
     }
 }
